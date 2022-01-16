@@ -17,11 +17,11 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 
-public class maintest {
+public class main {
 	public static void main(String args[]) throws FileNotFoundException, IOException, CsvValidationException {
-		String fileCSV = "C:\\Users\\Maxime\\Documents\\PRO\\Scolaire\\Cours\\FISE3\\PRI\\Rapport.csv";
+		String fileCSV = "C:\\Users\\Maxime\\Documents\\PRO\\Scolaire\\Cours\\FISE3\\PRI\\Rapport\\Rapport.csv";
 		List<String[]> doc;
-		maintest testCSV = new maintest();
+		main testCSV = new main();
 		doc = testCSV.readCSVFile(fileCSV);
 		AnnotationReflection annotation = new AnnotationReflection();
 		Map<String, ArrayList<String>> multiValueMap = annotation.Annotation();
@@ -36,14 +36,16 @@ public class maintest {
         		String[] tmp2 = doc.get(i);
         		tmp2[5] = "OK";
         		
-        		tmp2[2] = multiValueMap.get(tmp).toString();
+        		tmp2[2] = String.join(",", multiValueMap.get(tmp));
         		doc.set(i, tmp2);
         	}
         	else
         	{
         		String[] tmp2 = doc.get(i);
+        		System.out.println("test");
+        		System.out.println(tmp2);
         		tmp2[5] = "KO";
-        		tmp2[2] = "";
+        		tmp2[2] = null;
         		doc.set(i, tmp2);
 
         	}
@@ -53,8 +55,7 @@ public class maintest {
             System.out.println(Arrays.toString(row));
         }
 
-		//System.out.println(content);
-		//testCSV.writeToCsv(fileCSV, doc);
+		testCSV.writeToCsv(fileCSV, doc);
 	}
 	
 	public List<String[]> readCSVFile(String fileCSV){
@@ -90,9 +91,13 @@ public class maintest {
 	
     public void writeToCsv(String fileCSV, List<String[]> doc){
         try{
-            CSVWriter writer = new CSVWriter(new FileWriter(fileCSV));
-            String[] res = {""};
-            writer.writeNext(res);
+            CSVWriter writer = new CSVWriter(new FileWriter("C:\\\\Users\\\\Maxime\\\\Documents\\\\PRO\\\\Scolaire\\\\Cours\\\\FISE3\\\\PRI\\\\Rapport\\\\Rapport2.csv"), ';', ' ', '\t', "\n");
+            for (int i = 0 ; i < doc.size() ; i++) {
+            	String[] res = doc.get(i);
+            	
+            	writer.writeNext(res);
+            }
+            
 
             writer.close();
         }catch (IOException e) {
