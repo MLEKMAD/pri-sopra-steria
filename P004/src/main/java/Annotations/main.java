@@ -19,12 +19,12 @@ import com.opencsv.exceptions.CsvValidationException;
 
 public class main {
 	public static void main(String args[]) throws FileNotFoundException, IOException, CsvValidationException {
-		String fileCSV = "C:\\Users\\Maxime\\Documents\\PRO\\Scolaire\\Cours\\FISE3\\PRI\\Rapport\\Rapport.csv";
+		String fileCSV = "D:\\Fise3\\PRI\\pri-sopra-steria\\P004\\Rapport.csv";
 		List<String[]> doc;
 		main testCSV = new main();
 		doc = testCSV.readCSVFile(fileCSV);
 		AnnotationReflection annotation = new AnnotationReflection();
-		Map<String, ArrayList<String>> multiValueMap = annotation.Annotation();
+		Map<String, ArrayList<String>> multiValueMap = annotation.AnnotationTu();
 		
         for (int i = 2; i<doc.size() ; i++)
         {
@@ -34,6 +34,9 @@ public class main {
         	if (multiValueMap.containsKey(tmp))
         	{
         		String[] tmp2 = doc.get(i);
+        		System.out.println("tmp2[4]"+tmp2[4]);
+        		System.out.println("tmp2"+tmp2);
+
         		tmp2[5] = "OK";
         		
         		tmp2[2] = String.join(",", multiValueMap.get(tmp));
@@ -91,7 +94,7 @@ public class main {
 	
     public void writeToCsv(String fileCSV, List<String[]> doc){
         try{
-            CSVWriter writer = new CSVWriter(new FileWriter("C:\\\\Users\\\\Maxime\\\\Documents\\\\PRO\\\\Scolaire\\\\Cours\\\\FISE3\\\\PRI\\\\Rapport\\\\Rapport2.csv"), ';', ' ', '\t', "\n");
+            CSVWriter writer = new CSVWriter(new FileWriter("D:\\Fise3\\PRI\\pri-sopra-steria\\P004\\Rapport2.csv"), ';', ' ', '\t', "\n");
             for (int i = 0 ; i < doc.size() ; i++) {
             	String[] res = doc.get(i);
             	

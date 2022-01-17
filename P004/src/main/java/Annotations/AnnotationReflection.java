@@ -19,7 +19,7 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
 public class AnnotationReflection {
-    public Map<String, ArrayList<String>> Annotation() {
+    public Map<String, ArrayList<String>> AnnotationTi() {
     	AnnotationReflection hello=new AnnotationReflection();  
     	List<Object> setclass=hello.findAllClassesUsingReflectionsLibrary("");
     	Map<String, ArrayList<String>> multiValueMap = new HashMap<String, ArrayList<String>>();
@@ -32,7 +32,7 @@ public class AnnotationReflection {
     	multiValueMap.put("Mazda", new ArrayList<String>());*/
     	for(Object s : setclass) {  
     		Method[] methods=((Class<? extends AnnotationReflection>) s).getDeclaredMethods();
-    		RGDc annotation = ((Class<? extends AnnotationReflection>) s).getAnnotation(RGDc.class);
+    		RGDTIc annotation = ((Class<? extends AnnotationReflection>) s).getAnnotation(RGDTIc.class);
     		if(annotation != null) {
     			for(String text : annotation.text())
 					if(multiValueMap.containsKey(text)) {
@@ -45,8 +45,51 @@ public class AnnotationReflection {
 					}
     		}
     		for(Method m : methods) { 
-    			if(m.getAnnotation(RGDf.class) != null) {
-    				for(String entry : m.getAnnotation(RGDf.class).text()) {
+    			if(m.getAnnotation(RGDTIf.class) != null) {
+    				for(String entry : m.getAnnotation(RGDTIf.class).text()) {
+    					if(multiValueMap.containsKey(entry)) {
+    						String[] words = m.toString().split(" ");
+    						multiValueMap.get(entry).add(words[words.length-1]);
+    					}else {
+    						multiValueMap.put(entry, new ArrayList<String>());
+    						String[] words = m.toString().split(" ");
+    						multiValueMap.get(entry).add(words[words.length-1]);
+    					}
+    				}		
+    			}		
+    		}
+    	}
+    	System.out.println(multiValueMap);
+    	return multiValueMap;
+		}
+    public Map<String, ArrayList<String>> AnnotationTu() {
+    	AnnotationReflection hello=new AnnotationReflection();  
+    	List<Object> setclass=hello.findAllClassesUsingReflectionsLibrary("");
+    	Map<String, ArrayList<String>> multiValueMap = new HashMap<String, ArrayList<String>>();
+    	/*multiValueMap.put("R25", new ArrayList<String>());
+    	multiValueMap.put("RG22", new ArrayList<String>());
+    	multiValueMap.put("Volvo", new ArrayList<String>());
+    	multiValueMap.put("BMW", new ArrayList<String>());
+    	multiValueMap.put("Volvo", new ArrayList<String>());
+    	multiValueMap.put("Ford", new ArrayList<String>());
+    	multiValueMap.put("Mazda", new ArrayList<String>());*/
+    	for(Object s : setclass) {  
+    		Method[] methods=((Class<? extends AnnotationReflection>) s).getDeclaredMethods();
+    		RGDTUc annotation = ((Class<? extends AnnotationReflection>) s).getAnnotation(RGDTUc.class);
+    		if(annotation != null) {
+    			for(String text : annotation.text())
+					if(multiValueMap.containsKey(text)) {
+						String[] words = s.toString().split(" ");
+						multiValueMap.get(text).add(words[words.length-1]);
+					}else {
+						multiValueMap.put(text, new ArrayList<String>());
+						String[] words = s.toString().split(" ");
+						multiValueMap.get(text).add(words[words.length-1]);
+					}
+    		}
+    		for(Method m : methods) { 
+    			if(m.getAnnotation(RGDTUf.class) != null) {
+    				for(String entry : m.getAnnotation(RGDTUf.class).text()) {
     					if(multiValueMap.containsKey(entry)) {
     						String[] words = m.toString().split(" ");
     						multiValueMap.get(entry).add(words[words.length-1]);
@@ -71,13 +114,24 @@ public class AnnotationReflection {
     }
     
     
-@RGDf(text = {"TR106-R6", "BMW", "Ford", "Mazda","RG22"})
-public void mafct() {
+@RGDTUf(text = {"TR106-R6", "BMW", "Ford", "Mazda","RG22"})
+public void mafctTU() {
 	
 }
 
-@RGDc(text = "TR106-R7")
+@RGDTUc(text = "TR106-R7")
 class Class1 {
+    public int num() {
+        return 1;
+    }
+}
+@RGDTIf(text = {"TR106-R6", "BMW", "Ford", "Mazda","RG22"})
+public void mafctTI() {
+	
+}
+
+@RGDTIc(text = "TR106-R7")
+class Class2 {
     public int num() {
         return 1;
     }
