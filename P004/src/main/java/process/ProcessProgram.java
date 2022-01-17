@@ -16,43 +16,44 @@ import com.opencsv.exceptions.CsvException;
 import Annotations.AnnotationReflection;
 
 public class ProcessProgram {
+	// Fonction vérifiant la correspondance TU/TI avec les RG et l'écrit dans un fichier CSV
 	public void processFile(String fileCSV, String outputFile) {
 		List<String[]> doc;
 		doc = this.readCSVFile(fileCSV);
 		AnnotationReflection annotation = new AnnotationReflection();
-		Map<String, ArrayList<String>> multiValueMap = annotation.getTuDecorators();
-		
+		Map<String, ArrayList<String>> multiValueMapTU = annotation.getTuDecorators();
+		Map<String, ArrayList<String>> multiValueMapTI = annotation.getTiDecorators();
+		// Ecriture de la couverture des RG par les TI/TU
         for (int i = 2; i<doc.size() ; i++)
         {
         	String tmp = doc.get(i)[0];
-        	if (tmp != "")
-        	System.out.println(tmp);
-        	if (multiValueMap.containsKey(tmp))
+        	if (multiValueMapTU.containsKey(tmp)) // Ecriture des TU
         	{
         		String[] tmp2 = doc.get(i);
         		tmp2[5] = "OK";
-        		
-        		tmp2[2] = String.join(",", multiValueMap.get(tmp));
+        		tmp2[2] = String.join(",", multiValueMapTU.get(tmp));
         		doc.set(i, tmp2);
         	}
-        	else
+        	if (multiValueMapTI.containsKey(tmp)) // Ecriture des TI
         	{
         		String[] tmp2 = doc.get(i);
-        		System.out.println("test");
-        		System.out.println(tmp2);
+        		tmp2[5] = "OK";
+        		tmp2[3] = String.join(",", multiValueMapTI.get(tmp));
+        		doc.set(i, tmp2);
+        	}
+        	if (!multiValueMapTU.containsKey(tmp) && !multiValueMapTI.containsKey(tmp)) // Ecriture des KO
+        	{
+        		String[] tmp2 = doc.get(i);
         		tmp2[5] = "KO";
         		tmp2[2] = null;
         		doc.set(i, tmp2);
-
         	}
         }
-
-        for(String[] row : doc){
-            System.out.println(Arrays.toString(row));
-        }
-
 		this.writeToCsv(fileCSV, doc, outputFile);
 	}
+	
+	
+	
 	public List<String[]> readCSVFile(String fileCSV){
         CSVReader reader = null;
         try {
@@ -69,20 +70,17 @@ public class ProcessProgram {
         } catch (CsvException e) {
             e.printStackTrace();
         }
-        
-        for(String[] row : allRows){
-            System.out.println(Arrays.toString(row));
-        }
+
         List<String[]> doc = new ArrayList();
         allRows.forEach(row->{
         	row = row[0].split(";");
         	doc.add(row);
         });
-        for(String[] row : doc){
-            System.out.println(Arrays.toString(row));
-        }
         return doc;
     }
+	
+	
+	
     public void writeToCsv(String fileCSV, List<String[]> doc, String outputFile){
         try{
             CSVWriter writer = new CSVWriter(new FileWriter(outputFile), ';', ' ', '\t', "\n");
@@ -91,8 +89,6 @@ public class ProcessProgram {
             	
             	writer.writeNext(res);
             }
-            
-
             writer.close();
         }catch (IOException e) {
             e.printStackTrace();
