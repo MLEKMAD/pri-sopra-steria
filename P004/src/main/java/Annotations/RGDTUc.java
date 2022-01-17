@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@interface RGDTUc {
+public @interface RGDTUc {
     String[] text();
 }

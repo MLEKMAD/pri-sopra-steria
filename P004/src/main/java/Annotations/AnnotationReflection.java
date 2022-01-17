@@ -20,26 +20,35 @@ public class AnnotationReflection {
     		Method[] methods=((Class<? extends AnnotationReflection>) s).getDeclaredMethods();
     		RGDTIc annotation = ((Class<? extends AnnotationReflection>) s).getAnnotation(RGDTIc.class);
     		if(annotation != null) {
-    			for(String text : annotation.text())
+    			for(String text : annotation.text()) {
+    				text = text.trim();
 					if(multiValueMap.containsKey(text)) {
 						String[] words = s.toString().split(" ");
-						multiValueMap.get(text).add(words[words.length-1]);
+						String[] classnames = words[words.length-1].split("\\.");
+						String[] classnames2 = classnames[classnames.length-1].split("\\$");
+						multiValueMap.get(text).add(classnames2[classnames2.length-1]);
 					}else {
 						multiValueMap.put(text, new ArrayList<String>());
 						String[] words = s.toString().split(" ");
-						multiValueMap.get(text).add(words[words.length-1]);
+						String[] classnames = words[words.length-1].split("\\.");
+						String[] classnames2 = classnames[classnames.length-1].split("\\$");
+						multiValueMap.get(text).add(classnames2[classnames2.length-1]);
 					}
+    			}
     		}
     		for(Method m : methods) { 
     			if(m.getAnnotation(RGDTIf.class) != null) {
     				for(String entry : m.getAnnotation(RGDTIf.class).text()) {
+    					entry = entry.trim();
     					if(multiValueMap.containsKey(entry)) {
     						String[] words = m.toString().split(" ");
-    						multiValueMap.get(entry).add(words[words.length-1]);
+    						String[] functionnames = words[words.length-1].split("\\.");
+    						multiValueMap.get(entry).add(functionnames[functionnames.length-1]);
     					}else {
     						multiValueMap.put(entry, new ArrayList<String>());
     						String[] words = m.toString().split(" ");
-    						multiValueMap.get(entry).add(words[words.length-1]);
+    						String[] functionnames = words[words.length-1].split("\\.");
+    						multiValueMap.get(entry).add(functionnames[functionnames.length-1]);
     					}
     				}		
     			}		
@@ -56,26 +65,35 @@ public class AnnotationReflection {
     		Method[] methods=((Class<? extends AnnotationReflection>) s).getDeclaredMethods();
     		RGDTUc annotation = ((Class<? extends AnnotationReflection>) s).getAnnotation(RGDTUc.class);
     		if(annotation != null) {
-    			for(String text : annotation.text())
+    			for(String text : annotation.text()) {
+    				text= text.trim();
 					if(multiValueMap.containsKey(text)) {
 						String[] words = s.toString().split(" ");
-						multiValueMap.get(text).add(words[words.length-1]);
+						String[] classnames = words[words.length-1].split("\\.");
+						String[] classnames2 = classnames[classnames.length-1].split("\\$");
+						multiValueMap.get(text).add(classnames2[classnames2.length-1]);
 					}else {
 						multiValueMap.put(text, new ArrayList<String>());
 						String[] words = s.toString().split(" ");
-						multiValueMap.get(text).add(words[words.length-1]);
+						String[] classnames = words[words.length-1].split("\\.");
+						String[] classnames2 = classnames[classnames.length-1].split("\\$");
+						multiValueMap.get(text).add(classnames2[classnames2.length-1]);
 					}
+    			}
     		}
     		for(Method m : methods) { 
     			if(m.getAnnotation(RGDTUf.class) != null) {
     				for(String entry : m.getAnnotation(RGDTUf.class).text()) {
+    					entry= entry.trim();
     					if(multiValueMap.containsKey(entry)) {
     						String[] words = m.toString().split(" ");
-    						multiValueMap.get(entry).add(words[words.length-1]);
+    						String[] functionnames = words[words.length-1].split("\\.");
+    						multiValueMap.get(entry).add(functionnames[functionnames.length-1]);
     					}else {
     						multiValueMap.put(entry, new ArrayList<String>());
     						String[] words = m.toString().split(" ");
-    						multiValueMap.get(entry).add(words[words.length-1]);
+    						String[] functionnames = words[words.length-1].split("\\.");
+    						multiValueMap.get(entry).add(functionnames[functionnames.length-1]);
     					}
     				}		
     			}		
@@ -98,7 +116,7 @@ public void mafctTU() {
 	
 }
 
-@RGDTUc(text = "TR106-R7")
+@RGDTUc(text = "TR106-R7 ")
 class Class1 {
     public int num() {
         return 1;
