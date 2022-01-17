@@ -11,9 +11,8 @@ import process.ProcessProgram;
 
 public class Main {
 	public static void main(String args[]) throws FileNotFoundException, IOException, CsvValidationException {
-		String fileCSV = "C:\\Users\\Maxime\\Documents\\PRO\\Scolaire\\Cours\\FISE3\\PRI\\Rapport\\Rapport.csv";
-		String Destination = "C:\\Users\\Maxime\\Documents\\PRO\\Scolaire\\Cours\\FISE3\\PRI\\Rapport";
-		
+		String fileCSV = "Rapport.csv";
+		String Destination = ".";		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDateTime date = LocalDateTime.now();
 		String outputFile = Destination + "\\Rapport-" + dtf.format(date).toString() + ".csv";

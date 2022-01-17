@@ -20,7 +20,7 @@ public class AnnotationReflection {
     		Method[] methods=((Class<? extends AnnotationReflection>) s).getDeclaredMethods();
     		RGDTIc annotation = ((Class<? extends AnnotationReflection>) s).getAnnotation(RGDTIc.class);
     		if(annotation != null) {
-    			for(String text : annotation.text()) {
+    			for(String text : annotation.rules()) {
     				text = text.trim();
 					if(multiValueMap.containsKey(text)) {
 						String[] words = s.toString().split(" ");
@@ -38,7 +38,7 @@ public class AnnotationReflection {
     		}
     		for(Method m : methods) { 
     			if(m.getAnnotation(RGDTIf.class) != null) {
-    				for(String entry : m.getAnnotation(RGDTIf.class).text()) {
+    				for(String entry : m.getAnnotation(RGDTIf.class).rules()) {
     					entry = entry.trim();
     					if(multiValueMap.containsKey(entry)) {
     						String[] words = m.toString().split(" ");
@@ -65,7 +65,7 @@ public class AnnotationReflection {
     		Method[] methods=((Class<? extends AnnotationReflection>) s).getDeclaredMethods();
     		RGDTUc annotation = ((Class<? extends AnnotationReflection>) s).getAnnotation(RGDTUc.class);
     		if(annotation != null) {
-    			for(String text : annotation.text()) {
+    			for(String text : annotation.rules()) {
     				text= text.trim();
 					if(multiValueMap.containsKey(text)) {
 						String[] words = s.toString().split(" ");
@@ -83,7 +83,7 @@ public class AnnotationReflection {
     		}
     		for(Method m : methods) { 
     			if(m.getAnnotation(RGDTUf.class) != null) {
-    				for(String entry : m.getAnnotation(RGDTUf.class).text()) {
+    				for(String entry : m.getAnnotation(RGDTUf.class).rules()) {
     					entry= entry.trim();
     					if(multiValueMap.containsKey(entry)) {
     						String[] words = m.toString().split(" ");
@@ -111,23 +111,23 @@ public class AnnotationReflection {
     }
     
     
-@RGDTUf(text = {"TR106-R6", "BMW", "Ford", "Mazda","RG22"})
+@RGDTUf(rules = {"TR106-R6", "BMW", "Ford", "Mazda","RG22"})
 public void mafctTU() {
 	
 }
 
-@RGDTUc(text = "TR106-R7 ")
+@RGDTUc(rules = "TR106-R7 ")
 class Class1 {
     public int num() {
         return 1;
     }
 }
-@RGDTIf(text = {"TR106-R6", "BMW", "Ford", "Mazda","RG22"})
+@RGDTIf(rules = {"TR106-R6", "BMW", "Ford", "Mazda","RG22"})
 public void mafctTI() {
 	
 }
 
-@RGDTIc(text = "TR106-R7")
+@RGDTIc(rules = "TR106-R7")
 class Class2 {
     public int num() {
         return 1;
