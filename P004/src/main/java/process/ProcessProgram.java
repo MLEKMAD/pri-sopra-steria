@@ -22,8 +22,8 @@ public class ProcessProgram {
 		doc = this.readCSVFile(fileCSV);
 		Boolean ok = true;
 		AnnotationReflection annotation = new AnnotationReflection();
-		Map<String, ArrayList<String>> multiValueMapTU = annotation.getTuDecorators();
-		Map<String, ArrayList<String>> multiValueMapTI = annotation.getTiDecorators();
+		Map<String, ArrayList<String>> multiValueMapTU = annotation.getDecorators(true);
+		Map<String, ArrayList<String>> multiValueMapTI = annotation.getDecorators(false);
 		// Ecriture de la couverture des RG par les TI/TU
         for (int i = 2; i<doc.size() ; i++)
         {
