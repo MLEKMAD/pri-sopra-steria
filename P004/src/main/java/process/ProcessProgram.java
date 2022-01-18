@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -29,25 +30,30 @@ public class ProcessProgram {
         	String tmp = doc.get(i)[0];
         	if (multiValueMapTU.containsKey(tmp)) // Ecriture des TU
         	{
-        		String[] tmp2 = doc.get(i);
-        		tmp2[5] = "OK";
-        		tmp2[2] = String.join(",", multiValueMapTU.get(tmp));
-        		doc.set(i, tmp2);
+        		List<String>tmp2 = new ArrayList<String>();
+        		tmp2 = new ArrayList<>(Arrays.asList(doc.get(i)));
+        		if (tmp2.size()<6) tmp2.add("OK");
+        		else tmp2.set(5, "OK");
+        		tmp2.set(2, String.join(",", multiValueMapTU.get(tmp)));
+        		doc.set(i, tmp2.toArray(new String[0]));
         	}
         	if (multiValueMapTI.containsKey(tmp)) // Ecriture des TI
         	{
-        		String[] tmp2 = doc.get(i);
-        		tmp2[5] = "OK";
-        		tmp2[3] = String.join(",", multiValueMapTI.get(tmp));
-        		doc.set(i, tmp2);
+        		List<String>tmp2 = new ArrayList<String>();
+        		tmp2 = new ArrayList<>(Arrays.asList(doc.get(i)));
+        		if (tmp2.size()<6) tmp2.add("OK");
+        		else tmp2.set(5, "OK");
+        		tmp2.set(2, String.join(",", multiValueMapTI.get(tmp)));
+        		doc.set(i, tmp2.toArray(new String[0]));
         	}
         	if (!multiValueMapTU.containsKey(tmp) && !multiValueMapTI.containsKey(tmp)) // Ecriture des KO
         	{
-        		String[] tmp2 = doc.get(i);
-        		tmp2[5] = "KO";
-        		tmp2[2] = null;
-        		doc.set(i, tmp2);
-        		ok = false;
+        		List<String>tmp2 = new ArrayList<String>();
+        		tmp2 = new ArrayList<>(Arrays.asList(doc.get(i)));
+        		if (tmp2.size()<6) tmp2.add("KO");
+        		else tmp2.set(5, "KO");
+        		tmp2.set(2, null);
+        		doc.set(i, tmp2.toArray(new String[0]));
         	}
         }
 		this.writeToCsv(fileCSV, doc, outputFile);
