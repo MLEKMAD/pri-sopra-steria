@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +16,10 @@ import Annotations.AnnotationReflection;
 
 public class ProcessProgram {
 	// Fonction vérifiant la correspondance TU/TI avec les RG et l'écrit dans un fichier CSV
-	public void processFile(String fileCSV, String outputFile) {
+	public Boolean processFile(String fileCSV, String outputFile) {
 		List<String[]> doc;
 		doc = this.readCSVFile(fileCSV);
+		Boolean ok = true;
 		AnnotationReflection annotation = new AnnotationReflection();
 		Map<String, ArrayList<String>> multiValueMapTU = annotation.getTuDecorators();
 		Map<String, ArrayList<String>> multiValueMapTI = annotation.getTiDecorators();
@@ -47,9 +47,11 @@ public class ProcessProgram {
         		tmp2[5] = "KO";
         		tmp2[2] = null;
         		doc.set(i, tmp2);
+        		ok = false;
         	}
         }
 		this.writeToCsv(fileCSV, doc, outputFile);
+		return ok;
 	}
 	
 	
