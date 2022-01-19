@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,40 +32,47 @@ public class ProcessProgram {
 		List<String[]> doc;
 		doc = this.readCSVFile(fileCSV);
 		Boolean noKO = true;
+		Boolean isTu = true;
 		AnnotationReflection annotation = new AnnotationReflection();
-		Map<String, ArrayList<String>> multiValueMapTU = annotation.getDecorators(true);
-		Map<String, ArrayList<String>> multiValueMapTI = annotation.getDecorators(false);
+		Map<String, ArrayList<String>> annotationMapTu = annotation.getDecorators(isTu);
+		Map<String, ArrayList<String>> annotationMapTi = annotation.getDecorators(!isTu);
 		List<String> rgName = new ArrayList<String>();
 		int docSize = doc.size();
 		for (int i = 2; i < docSize; i++)
-			rgName.add(doc.get(i)[0]); // Récupération des régles de gestion dans une varriable locale Ecriture de la
+			rgName.add(doc.get(i)[0]); // Récupération des régles de gestion dans une varriable locale Ecriture de
+										// la
 										// couverture des RG par les TI/TU
 		for (int i = 2; i < docSize; i++) // On commence a 2 pour passer les deux premières lignes du fichier
 		{
 			List<String> inputLine = new ArrayList<String>();
 			inputLine = new ArrayList<>(Arrays.asList(doc.get(i)));
 			int inputSize = inputLine.size();
-			if (multiValueMapTU.containsKey(rgName.get(i-2))) // Ecriture des TU
+			if (annotationMapTu.containsKey(rgName.get(i - 2))) // Ecriture des TU
 			{
-				for (int j = inputSize; j < 6; j++) { // Remplis les case par null jusqu'à la colone contenant les KO/OK
+				for (int j = inputSize; j < 6; j++) { // Remplis les case par null jusqu'à la colone contenant les
+														// KO/OK
 					inputLine.add(null);
 				}
 				inputLine.set(5, "OK");
-				inputLine.set(2, String.join(",", multiValueMapTU.get(rgName.get(i-2))));
+				inputLine.set(2, String.join(",", annotationMapTu.get(rgName.get(i - 2))));
 				doc.set(i, inputLine.toArray(new String[0]));
 			}
-			if (multiValueMapTI.containsKey(rgName.get(i-2))) // Ecriture des TI
+			if (annotationMapTi.containsKey(rgName.get(i - 2))) // Ecriture des TI
 			{
-				for (int j = inputSize; j < 6; j++) { // Remplis les case par null jusqu'à la colone contenant les KO/OK
+				for (int j = inputSize; j < 6; j++) { // Remplis les case par null jusqu'à la colone contenant les
+														// KO/OK
 					inputLine.add(null);
 				}
 				inputLine.set(5, "OK");
-				inputLine.set(3, String.join(",", multiValueMapTI.get(rgName.get(i-2))));
+				inputLine.set(3, String.join(",", annotationMapTi.get(rgName.get(i - 2))));
 				doc.set(i, inputLine.toArray(new String[0]));
 			}
-			if (!multiValueMapTU.containsKey(rgName.get(i-2)) && !multiValueMapTI.containsKey(rgName.get(i-2))) // Ecriture des KO
+			if (!annotationMapTu.containsKey(rgName.get(i - 2)) && !annotationMapTi.containsKey(rgName.get(i - 2))) // Ecriture
+																													// des
+																													// KO
 			{
-				for (int j = inputSize; j < 6; j++) { // Remplis les case par null jusqu'à la colone contenant les KO/OK
+				for (int j = inputSize; j < 6; j++) { // Remplis les case par null jusqu'à la colone contenant les
+														// KO/OK
 					inputLine.add(null);
 				}
 				inputLine.set(5, "KO");
@@ -74,8 +83,8 @@ public class ProcessProgram {
 		}
 		this.writeToCsv(fileCSV, doc, outputFile);
 
-		for (int i = 0; i < multiValueMapTU.size(); i++) {
-			String rgToIndexZ = (String) multiValueMapTU.keySet().toArray()[i];
+		for (int i = 0; i < annotationMapTu.size(); i++) {
+			String rgToIndexZ = (String) annotationMapTu.keySet().toArray()[i];
 			if (!rgName.contains((CharSequence) rgToIndexZ))
 				textLog.add(rgToIndexZ);
 		}
@@ -99,7 +108,7 @@ public class ProcessProgram {
 			e.printStackTrace();
 		}
 
-		List<String[]> doc = new ArrayList();
+		List<String[]> doc = new ArrayList<String[]>();
 		allRows.forEach(row -> {
 			row = row[0].split(";");
 			doc.add(row);
@@ -136,11 +145,12 @@ public class ProcessProgram {
 	}
 
 	public void printLog() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
+		LocalDateTime date = LocalDateTime.now();
 		if (textLog.size() > 1) {
 			System.out.println("\n \n");
 			for (String line : textLog)
-				System.out.println(line);
+				System.out.println("[" + dtf.format(date) + "]: " + line);
 		}
-
 	}
 }
