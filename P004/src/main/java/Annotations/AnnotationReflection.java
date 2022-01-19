@@ -16,8 +16,10 @@ public class AnnotationReflection {
 		List<Object> allClasses = annotationReflection.findAllClassesUsingReflectionsLibrary("");
 		Map<String, ArrayList<String>> multiValueMap = new HashMap<String, ArrayList<String>>();
 		for (Object c : allClasses) {
+			@SuppressWarnings("unchecked")
 			Method[] methods = ((Class<? extends AnnotationReflection>) c).getDeclaredMethods();
 			if (tu) {
+				@SuppressWarnings("unchecked")
 				RGDTUc annotation = ((Class<? extends AnnotationReflection>) c).getAnnotation(RGDTUc.class);
 				if (annotation != null) {
 					for (String entry : annotation.rules()) {
@@ -45,6 +47,7 @@ public class AnnotationReflection {
 					}
 				}
 			} else {
+				@SuppressWarnings("unchecked")
 				RGDTIc annotation = ((Class<? extends AnnotationReflection>) c).getAnnotation(RGDTIc.class);
 				if (annotation != null) {
 					for (String entry : annotation.rules()) {
