@@ -78,7 +78,6 @@ public class AnnotationReflection {
 			}
 
 		}
-		System.out.println(multiValueMap);
 		return multiValueMap;
 
 	}
